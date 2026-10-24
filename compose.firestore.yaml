@@ -1,0 +1,12 @@
+# Optional overlay for an external host using an existing ADC credential file.
+# docker compose -f compose.yaml -f compose.firestore.yaml up -d --build
+services:
+  api:
+    environment:
+      JOIN_STORAGE: firestore
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/google-adc.json
+    secrets:
+      - google_adc
+secrets:
+  google_adc:
+    file: ${GOOGLE_CREDENTIALS_FILE:?Set GOOGLE_CREDENTIALS_FILE to an existing private ADC JSON file}
