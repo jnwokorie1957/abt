@@ -1,0 +1,77 @@
+{
+  "verified_at": "2026-10-22T16:34:07.226378+00:00",
+  "original": "https://abt-social-website.vercel.app/",
+  "public_files": 46,
+  "public_bytes": 15102824,
+  "original_file_sha256_matches": true,
+  "missing_discovered_local_asset_references": [],
+  "public_assets": {
+    "webp_images": 22,
+    "png_images_and_icons": 4,
+    "woff2_fonts": 9,
+    "mp4_videos": 2,
+    "javascript_files": 7,
+    "stylesheets": 1,
+    "html_files": 1
+  },
+  "browser_checks": {
+    "desktop_viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "mobile_viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "intro_completes": true,
+    "animated_menu_and_smooth_navigation": true,
+    "gallery_photo_switch": true,
+    "mobile_horizontal_gallery_scroll": true,
+    "pillars_expand": true,
+    "faq_expand": true,
+    "galentines_video_pause_and_resume": true,
+    "galentines_video_seconds": 31.881995,
+    "service_day_gallery_video_playing": true,
+    "service_day_video_seconds": 41,
+    "all_three_quiz_steps": true,
+    "local_submission_saved_and_original_success_screen": true,
+    "loaded_broken_images": [],
+    "console_errors_or_warnings": [],
+    "observed_external_asset_urls": [],
+    "viewport_override_reset": true
+  },
+  "automated_checks": {
+    "tests": 16,
+    "passed": 16,
+    "failed": 0,
+    "coverage": [
+      "all 46 original file hashes",
+      "all 46 files served",
+      "join persistence",
+      "invalid email and header injection",
+      "missing quiz answers",
+      "malformed JSON",
+      "oversize requests",
+      "cross-origin rejection",
+      "API methods",
+      "private-path protection",
+      "MP4 byte ranges",
+      "invalid ranges",
+      "HEAD and conditional caching",
+      "mock Firestore payload and failure behavior"
+    ]
+  },
+  "not_verified": [
+    "Live Firestore writes: no project or credentials supplied",
+    "Docker/Nginx/Gunicorn startup: those runtimes are unavailable on this computer",
+    "DNS/HTTPS cutover: no hosting destination supplied",
+    "SMTP notifications: no delivery account configured"
+  ],
+  "limitations": [
+    "Production frontend capture; original editable private Next.js repository is unavailable",
+    "Original backend implementation and historical submissions are not included",
+    "Only assets referenced by the deployed public frontend can be discovered; unreferenced private files cannot be enumerated"
+  ],
+  "test_data_included": false,
+  "original_frontend_modified": false
+}
