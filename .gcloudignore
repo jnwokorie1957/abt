@@ -1,0 +1,9 @@
+.git
+node_modules
+dist
+.env
+data
+.expo
+mobile
+verification
+gha-creds-*.json

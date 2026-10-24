@@ -1,0 +1,14 @@
+// Assumed data model: join_submissions/{uuid}
+// Private inquiry: id, submitted_at (ISO string), name, email, instagram,
+// answers (three {q, a} maps), notification_status and optional notification
+// metadata. The Python API validates and writes these records through IAM.
+// No browser, authenticated user, or anonymous SDK client may access them.
+// Server SDKs bypass these rules; runtime IAM and server.py validation apply.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
