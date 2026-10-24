@@ -9,12 +9,18 @@ JS Authentication, and the club's existing content and photography.
 ```sh
 cd mobile
 pnpm install --frozen-lockfile
+pnpm exec expo login --browser
 pnpm start --go --tunnel
 ```
 
 Scan the terminal QR with Expo Go. The development server and computer must stay
 online. The tunnel address changes when restarted. `pnpm web` opens a browser
 preview. This is an Expo Go preview, not an App Store or Play Store release.
+On a physical iPhone, Expo CLI and Expo Go must be signed into the same Expo
+account. Scan with the iPhone Camera app and tap the Expo Go banner. On Android,
+use Expo Go's scanner. If the camera ignores a custom `exp://` link, open Expo Go
+first and ensure its account matches the CLI. Use the latest QR printed after
+signing in or restarting; an anonymous tunnel address is replaced after login.
 
 ## Screens
 

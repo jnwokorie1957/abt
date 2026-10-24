@@ -47,7 +47,14 @@ export function Fade({ children, style }: { children: React.ReactNode; style?: S
 export function Screen({ children, modal = false }: { children: React.ReactNode; modal?: boolean }) {
   const insets = useSafeAreaInsets();
   return <View style={{ flex: 1, backgroundColor: c.cream }}><LinearGradient colors={[c.cream, '#F8EBEE', '#EAF3F5', c.cream]} locations={[0, .37, .72, 1]} style={StyleSheet.absoluteFill} />
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingTop: insets.top + 18, paddingBottom: modal ? insets.bottom + 32 : insets.bottom + 120, paddingHorizontal: 24, gap: 28, width: '100%', maxWidth: 600, alignSelf: 'center' }} showsVerticalScrollIndicator={false}>{children}</ScrollView>
+    <ScrollView
+      style={{ flex: 1 }}
+      automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
+      keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : Platform.OS === 'android' ? 'on-drag' : 'none'}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ paddingTop: insets.top + 18, paddingBottom: modal ? insets.bottom + 32 : insets.bottom + 120, paddingHorizontal: 24, gap: 28, width: '100%', maxWidth: 600, alignSelf: 'center' }}
+      showsVerticalScrollIndicator={false}
+    >{children}</ScrollView>
   </View>;
 }
 export function Header({ title = 'a better\ntomorrow', back = false }: { title?: string; back?: boolean }) {

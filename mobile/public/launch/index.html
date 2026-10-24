@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f4ec" />
+  <title>Open ABT in Expo Go</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f8f4ec;color:#132e47;font:16px/1.6 system-ui,-apple-system,sans-serif;min-height:100svh;display:grid;place-items:center;padding:28px}main{max-width:440px;width:100%}.brand{font:24px/1 Georgia,serif}.eyebrow{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;margin:48px 0 16px}h1{font:46px/1.05 Georgia,serif;letter-spacing:-.04em;margin:0 0 22px}p{color:#526374}ol{padding-left:23px;margin:28px 0}li{padding-left:5px;margin-bottom:14px}.button{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#132e47;color:#fffdf8;text-decoration:none;border-radius:30px;padding:18px 23px;font-weight:650;min-height:58px}.button svg{width:22px;height:22px}.note{font-size:13px;margin-top:24px;border-top:1px solid #d9d7d1;padding-top:22px}.url{display:block;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,monospace;margin:12px 0;color:#132e47;user-select:all}.secondary{color:#132e47;text-underline-offset:4px}.badge{display:inline-block;padding:5px 10px;background:#f4b4c8;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:12px}
+    a:focus-visible{outline:3px solid #2471a1;outline-offset:5px}.button:hover{background:#284b64}a{transition:background .2s,color .2s}@media(prefers-reduced-motion:reduce){a{transition:none}}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">a better<br />tomorrow.</div>
+    <p class="eyebrow">ABT · iPhone preview</p>
+    <h1>Open the app<br />in Expo Go.</h1>
+    <p>The QR code brought you to this page. Use the button below to hand the preview to Expo Go.</p>
+    <ol><li>Install <a class="secondary" href="https://expo.dev/go">Expo Go</a> if you don’t have it.</li><li>Sign into Expo Go as <strong>jnwokorie</strong>, the account connected to this computer.</li><li>Tap the button and choose <strong>Open</strong> when your iPhone asks.</li></ol>
+    <a id="open-expo" class="button" href="exp://gpdvlh4-jnwokorie-8081.exp.direct">Open in Expo Go<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 19 5M5 5h14v14" /></svg></a>
+    <p class="note">Keep the development computer and server online. If you see a version or connection error, send the exact message so it can be fixed.</p>
+    <code id="expo-url" class="url">exp://gpdvlh4-jnwokorie-8081.exp.direct</code>
+    <a class="secondary" href="/">View the browser preview</a>
+  </main>
+  <script>
+    // Follow the current tunnel host, so a restart does not leave a stale link.
+    // A localhost browser preview instead uses the current public tunnel.
+    if (location.hostname.endsWith('.exp.direct')) {
+      const expoUrl = 'exp://' + location.host;
+      document.getElementById('open-expo').href = expoUrl;
+      document.getElementById('expo-url').textContent = expoUrl;
+    }
+  </script>
+</body>
+</html>

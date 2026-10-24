@@ -1,43 +1,42 @@
 {
   "faq": {
     "title": [
-      "Little",
-      "questions,",
-      "big",
-      "answers"
+      "Before",
+      "your first",
+      "social"
     ],
     "emoji": "💭💗🩵",
     "items": [
       {
         "q": "Who is A Better Tomorrow Social for?",
-        "a": "Women in Houston who want more from a night out — friendship, networking and a reason to give back. If you love a good dress code and a good cause, you’re one of us."
+        "a": "ABT is for women in Houston who want to meet people and give back locally. You might find us at a cocktail soirée, packing meals or heading to Pilates."
       },
       {
         "q": "How do I get tickets to a social?",
-        "a": "RSVP through the link in our Instagram bio. Tickets are sold through Eventbrite and availability is limited, so grab yours early."
+        "a": "Check the link in our Instagram bio for the next event and its booking details. Our ticketed socials use Eventbrite; availability depends on the event."
       },
       {
         "q": "Where do the proceeds go?",
-        "a": "Every experience raises money for a Houston organization supporting women and children. So far that has included Daya Houston, the Houston Food Bank and The Avondale House."
+        "a": "Past gatherings have supported Daya Houston, Houston Food Bank and The Avondale House through fundraising, donated items and volunteering. Check the event post for the cause and donation details."
       },
       {
         "q": "How do I become a member?",
-        "a": "DM us on Instagram for club membership inquiries, or fill out the quick form below and we’ll get back to you."
+        "a": "Send us a membership inquiry using the form below, or DM us on Instagram. The form gives us a little background about you; it doesn’t book a ticket or confirm membership."
       },
       {
         "q": "Can my business sponsor or partner with ABT?",
-        "a": "Yes! Our socials are made possible by local sponsors, florists and venues. Tell us about your business in the form below."
+        "a": "We’d love to hear from local businesses, venues and nonprofit organizations. Choose the business or partner option in the form and leave your contact details."
       },
       {
         "q": "Do I need to bring anything?",
-        "a": "Sometimes! Some socials include a donation drive (like hygiene products for Galentine’s). Each event post shares the dress code and what to bring."
+        "a": "Check the event post before you come. Some socials include a donation drive, like the hygiene items collected at Galentine’s. You’ll find the dress code there too."
       }
     ]
   },
   "hero": {
     "eyebrow": "Houston social club",
-    "lineA": "Social club",
-    "lineB": "with purpose",
+    "lineA": "A reason to get together.",
+    "lineB": "A way to give back.",
     "cards": [
       {
         "src": "/media/service-1.webp",
@@ -58,9 +57,9 @@
   },
   "join": {
     "label": "Join us",
-    "title": "Tell us about you.",
-    "text": "A mini quiz, 3 questions, under a minute. We’ll get back to you with the next social.",
-    "cta": "Start the quiz",
+    "title": "Tell us a little about yourself.",
+    "text": "Tell us what brings you to ABT, then leave your contact details. We’ll start with three questions about your interests.",
+    "cta": "Start the questions",
     "photo": "/media/gal-group-c.webp",
     "quiz": [
       {
@@ -93,7 +92,7 @@
     ]
   },
   "latest": {
-    "label": "Latest social",
+    "label": "From our past socials",
     "title": "Pilates Charity Social",
     "thumb": "/media/flyer-pilates-2.webp",
     "tags": [
@@ -101,7 +100,7 @@
       "Sisterhood",
       "For The Avondale House"
     ],
-    "cta": "See the social",
+    "cta": "Look back at the social",
     "href": "https://www.eventbrite.com/e/abt-x-jetset-wellness-charity-pilates-social-tickets-1998973013093"
   },
   "manifesto": {
@@ -153,7 +152,7 @@
       "Connect.",
       "Inspire."
     ],
-    "intro": "Every ABT experience is built on three things we care about most.",
+    "intro": "Some days call for cocktail attire. Others call for a volunteer shirt.",
     "items": [
       {
         "name": "Socials & soirées",
@@ -224,7 +223,7 @@
       ],
       "color": "#7a1426",
       "ink": "#ffd3e0",
-      "blurb": "A night of love, laughter, friendship and philanthropy — custom bouquets, pink & red cocktail attire, and donations for survivors of domestic and sexual violence.",
+      "blurb": "Pink and red cocktail attire, a bouquet bar and an evening at Sophie’s Living Room. Our Galentine’s Soirée raised funds and collected hygiene items for Daya Houston.",
       "slides": [
         {
           "src": "/media/gal-trio.webp",
@@ -261,7 +260,7 @@
       ],
       "color": "#9adafe",
       "ink": "#0f2a4a",
-      "blurb": "A morning volunteering at the Houston Food Bank — packing nearly 16,000 meals for families in need — followed by lunch and real conversation.",
+      "blurb": "We spent the morning at Houston Food Bank, packing nearly 16,000 meals for families in need. Then we sat down for lunch, mimosas and a chance to catch up.",
       "slides": [
         {
           "src": "/media/service-1.webp",
@@ -299,7 +298,7 @@
       ],
       "color": "#55633a",
       "ink": "#f6e7d8",
-      "blurb": "A morning of wellness, gratitude, mindfulness and sisterhood — a mat pilates class fundraising for The Avondale House, supporting individuals with autism and other disabilities.",
+      "blurb": "A Pilates class at Jetset River Oaks supporting The Avondale House, which serves people with autism and other disabilities. Movement, mindfulness and time together.",
       "slides": [
         {
           "src": "/media/flyer-pilates-2.webp",
@@ -314,53 +313,51 @@
   ],
   "statement": {
     "lines": [
-      "The best kind",
-      "of luxury is",
-      "giving back"
+      "We gather",
+      "to give",
+      "back."
     ],
     "and": "and",
     "finale": [
-      "leaving a",
-      "legacy."
+      "Here’s to a",
+      "better tomorrow."
     ]
   },
   "steps": {
     "title": [
-      "Every social",
-      "follows",
-      "this order.",
-      "Always."
+      "Before your",
+      "first social."
     ],
     "emoji": "🎟️💌👗",
     "side": {
-      "lead": "Every ABT gathering pours into you — and into Houston.",
-      "body": "Proceeds from every experience go to organizations supporting women and children in our city. You show up, we handle the rest."
+      "lead": "The details change from one gathering to the next.",
+      "body": "Check the event post for the plan, booking information, dress code and anything you need to bring."
     },
     "items": [
       {
-        "name": "RSVP",
         "n": "01",
-        "text": "Grab your ticket from the link in our bio — spots are limited."
+        "name": "Find a social",
+        "text": "Check Instagram for the date, venue and plan."
       },
       {
-        "name": "Dress the theme",
         "n": "02",
-        "text": "Pink & red for Galentine’s, blue for service day. We love a dress code."
+        "name": "Book your spot",
+        "text": "Follow the RSVP or ticket instructions in the event post."
       },
       {
-        "name": "Show up & serve",
         "n": "03",
-        "text": "Volunteer, donate, move, create — together."
+        "name": "Check the dress code",
+        "text": "Pink and red for Galentine’s, blue for service day. We love a dress code."
       },
       {
-        "name": "Sip & connect",
         "n": "04",
-        "text": "Lunch, cocktails, bouquets and conversations that last."
+        "name": "See what to bring",
+        "text": "Some gatherings include a donation drive. Check the details before you leave."
       },
       {
-        "name": "Give back",
         "n": "05",
-        "text": "Every ticket supports a Houston nonprofit for women & children."
+        "name": "Come meet us",
+        "text": "Volunteer, take a class or pull up a chair. We’ll see you there."
       }
     ]
   },
@@ -371,10 +368,10 @@
       "to give",
       "back,"
     ],
-    "lead": "A Better Tomorrow Social is a community rooted in connection, empowerment, and impact.",
+    "lead": "A Better Tomorrow Social brings women together in Houston to make friends and support local causes.",
     "body": [
-      "We curate intentional social gatherings and one-of-a-kind experiences where like-minded women come together to build genuine friendships, expand their networks, and create unforgettable memories. But what makes us different is the mission behind the moment.",
-      "Every experience we host is designed to pour into you and pour into others. With each gathering, we raise proceeds and give back to causes that support women and children — because we believe the best kind of luxury is creating change and leaving a legacy."
+      "We meet over cocktails, on the volunteer line and in the Pilates studio. There’s time to get to know each other, and a reason for getting together beyond the social itself.",
+      "Our gatherings have supported Daya Houston, Houston Food Bank and The Avondale House. That has meant fundraising, donated hygiene items and a morning spent packing nearly 16,000 meals."
     ],
     "cards": [
       {
@@ -415,22 +412,22 @@
       {
         "icon": "🫶🏼",
         "title": "Real sisterhood",
-        "text": "Genuine friendships with like-minded women who show up for each other."
+        "text": "Meet other women in Houston over a shared table, a class or a volunteer shift."
       },
       {
         "icon": "🪽",
-        "title": "Purpose first",
-        "text": "Every gathering raises proceeds for causes that support women & children."
+        "title": "A way to help",
+        "text": "Give your time, bring a donation or attend a fundraiser for a local cause."
       },
       {
         "icon": "🥂",
-        "title": "One-of-a-kind",
-        "text": "Soirées, service days and wellness mornings — never the same night twice."
+        "title": "A different plan",
+        "text": "A bouquet bar one evening. Pilates or a morning at the food bank the next."
       },
       {
         "icon": "🌎",
-        "title": "Houston impact",
-        "text": "From Daya Houston to the Houston Food Bank, our impact is only beginning."
+        "title": "Houston, always",
+        "text": "Spend time at local venues and get to know the organizations working in our city."
       }
     ]
   }
