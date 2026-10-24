@@ -1,0 +1,30 @@
+services:
+  web:
+    image: nginx:stable-alpine
+    ports:
+      - "${HTTP_BIND:-127.0.0.1}:${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+    restart: unless-stopped
+  api:
+    build: .
+    environment:
+      DATA_DIR: /data
+      JOIN_STORAGE: ${JOIN_STORAGE:-sqlite}
+      FIRESTORE_PROJECT_ID: ${FIRESTORE_PROJECT_ID:-}
+      FIRESTORE_DATABASE_ID: ${FIRESTORE_DATABASE_ID:-(default)}
+      FIRESTORE_COLLECTION: ${FIRESTORE_COLLECTION:-join_submissions}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      JOIN_TO_EMAIL: ${JOIN_TO_EMAIL:-}
+    volumes:
+      - inquiries:/data
+    restart: unless-stopped
+volumes:
+  inquiries:
