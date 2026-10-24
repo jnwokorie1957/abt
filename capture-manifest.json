@@ -1,0 +1,389 @@
+{
+  "origin": "https://abt-social-website.vercel.app",
+  "captured_at": "2026-10-22",
+  "files": [
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+      "path": "public/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+      "bytes": 112594,
+      "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/0h6f8guoi9fnh.js",
+      "path": "public/_next/static/immutable/chunks/0h6f8guoi9fnh.js",
+      "bytes": 183367,
+      "sha256": "b73cd23bcc595e7c749f69fd2f22c1d8330c05070f2dc50d4ec6b884aff46feb",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/0x77mjofz04wd.css",
+      "path": "public/_next/static/immutable/chunks/0x77mjofz04wd.css",
+      "bytes": 38627,
+      "sha256": "e3612af255c173e3ea5eac7141fe3867f9eb88fe613a41bb174e852050352d8e",
+      "status": 200,
+      "content_type": "text/css; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/1kbt14nefgsiq.js",
+      "path": "public/_next/static/immutable/chunks/1kbt14nefgsiq.js",
+      "bytes": 16797,
+      "sha256": "49cf866bf4d0282119e51835114325403f28e53fd0bccb63dde7ba3114a8e9fb",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/2corl6wyj4669.js",
+      "path": "public/_next/static/immutable/chunks/2corl6wyj4669.js",
+      "bytes": 14377,
+      "sha256": "34ed6abf4c6d0d1bb3dc56d3f133d2a5dbc3a3c89c791deab314e27143ac14ce",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/2locjsg5_aplq.js",
+      "path": "public/_next/static/immutable/chunks/2locjsg5_aplq.js",
+      "bytes": 186323,
+      "sha256": "a33526d7a4cc3141b00beaacdaba5e09e66d8998b24539daa0d5ec4716627174",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/3h8tz0aeyszhh.js",
+      "path": "public/_next/static/immutable/chunks/3h8tz0aeyszhh.js",
+      "bytes": 229612,
+      "sha256": "f2edafbf67690a907c70df4c15abb650ea87444fb640f925e8fc5ff36a95cc78",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/chunks/turbopack-40p9mma2h4egg.js",
+      "path": "public/_next/static/immutable/chunks/turbopack-40p9mma2h4egg.js",
+      "bytes": 9718,
+      "sha256": "76e6deb1fc76c55df426a535e25b7b0cc13523d94173cbe9fd83ab2bd99d178a",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/0e7b7e0b829e3eb9-s.0s6677u7501n5.woff2",
+      "path": "public/_next/static/immutable/media/0e7b7e0b829e3eb9-s.0s6677u7501n5.woff2",
+      "bytes": 5188,
+      "sha256": "889f979804fc6c2ddb3c9577805caf156bfd092a5b6e58d680535d65267b933e",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/5c285b27cdda1fe8-s.p.0lsanbtneewqp.woff2",
+      "path": "public/_next/static/immutable/media/5c285b27cdda1fe8-s.p.0lsanbtneewqp.woff2",
+      "bytes": 36980,
+      "sha256": "468d56b6b25b05b70190b6c233d773f6f1770e8579827ce022a57f03fa8002fb",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/7ebf22b5a21034f8-s.p.3strvg7o-g5v2.woff2",
+      "path": "public/_next/static/immutable/media/7ebf22b5a21034f8-s.p.3strvg7o-g5v2.woff2",
+      "bytes": 15684,
+      "sha256": "6ee678c33f388dd7ba59700ebea635deb98821baafd817b09891f7927177f702",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/9e9f04e3c37952ab-s.p.002ht2t_o636a.woff2",
+      "path": "public/_next/static/immutable/media/9e9f04e3c37952ab-s.p.002ht2t_o636a.woff2",
+      "bytes": 12004,
+      "sha256": "23aab0b2692a0c89eb7997d3c7cf5bda41276d6cd4ab6cc0edc3edfcece32b09",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/c3cb240f9c892514-s.270md_-rr62el.woff2",
+      "path": "public/_next/static/immutable/media/c3cb240f9c892514-s.270md_-rr62el.woff2",
+      "bytes": 18192,
+      "sha256": "219b02c7d8884817d3d6ad4c8771f2c000ce4c5669a67ef4e2e5617ffa25c4cc",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/ccf27e5a7366fb23-s.1wwzpfhzaj2r0.woff2",
+      "path": "public/_next/static/immutable/media/ccf27e5a7366fb23-s.1wwzpfhzaj2r0.woff2",
+      "bytes": 7828,
+      "sha256": "a8c4bd7cd7073180e740d2d83a616b5cb0845579b73207eeafeae8532e70c901",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/daf789e4474d0d90-s.3w_oc3nqvqm6n.woff2",
+      "path": "public/_next/static/immutable/media/daf789e4474d0d90-s.3w_oc3nqvqm6n.woff2",
+      "bytes": 21296,
+      "sha256": "ae1a8ac1c2899a66eed47a851201bb78a56664bf8da6d34a9ee226582d15ac19",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/e41d5df559864f9e-s.p.2rlzm4mj5kw8e.woff2",
+      "path": "public/_next/static/immutable/media/e41d5df559864f9e-s.p.2rlzm4mj5kw8e.woff2",
+      "bytes": 15040,
+      "sha256": "60c06664b5a95c7de6cc3e00d1f9034d78bd1e40b564016b241674449a067d4d",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/_next/static/immutable/media/fc0a7394b875fa43-s.3zvkfbs08rnj_.woff2",
+      "path": "public/_next/static/immutable/media/fc0a7394b875fa43-s.3zvkfbs08rnj_.woff2",
+      "bytes": 8444,
+      "sha256": "a04fc7ed18a8037149ce0bfda58076709d8e0840e136ed00abbdc196b7992443",
+      "status": 200,
+      "content_type": "font/woff2"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/apple-icon.png?apple-icon.1hocxe7uydi3q.png",
+      "path": "public/apple-icon.png",
+      "bytes": 18196,
+      "sha256": "7b3dd262e6943f74a3afd4e531e708c59508cd9c13fbcb4260efa8776c39008f",
+      "status": 200,
+      "content_type": "image/png"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/icon.png?icon.2qc6k7kzoyyo0.png",
+      "path": "public/icon.png",
+      "bytes": 102792,
+      "sha256": "f2f71b14d2f4f8be6fbca56323694dad89e088cf9289643bd74dcaaf77f8bb57",
+      "status": 200,
+      "content_type": "image/png"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/",
+      "path": "public/index.html",
+      "bytes": 63421,
+      "sha256": "ab76baad162ce2941cc87c6fe1ea804794b4d61cb662d6c124c895feb7b3c414",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/daya-thanks.webp",
+      "path": "public/media/daya-thanks.webp",
+      "bytes": 120324,
+      "sha256": "e33740782ca5c33258ad799eaf7f7837ac11fd4cf1834672b5f53857286e8940",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/fb-duo.webp",
+      "path": "public/media/fb-duo.webp",
+      "bytes": 65346,
+      "sha256": "9cc56384dc0f249410cd6535971c600362fdf5637d7a101d0c04ec98e5522aee",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/fb-pour.webp",
+      "path": "public/media/fb-pour.webp",
+      "bytes": 51516,
+      "sha256": "3a25d007ec38554a0b8b2057866a057ee9cbd98dd534a57bb1ab5c6e378cc2f5",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/flyer-pilates-2.webp",
+      "path": "public/media/flyer-pilates-2.webp",
+      "bytes": 213520,
+      "sha256": "4e24b31ca22e9247e9169f3ef59d112e99c70e36305e13ff28c2ad65651329c4",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/flyer-pilates.webp",
+      "path": "public/media/flyer-pilates.webp",
+      "bytes": 74444,
+      "sha256": "12ae4fcc1eb8623c89dd18ad38967e27c69a63fa60ee87e5d20c91c2a6e8838e",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-backdrop.webp",
+      "path": "public/media/gal-backdrop.webp",
+      "bytes": 172470,
+      "sha256": "47dce1b539930120dc4b1fe0474ca79791a1482657e1e5da64965c13efe97557",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-bar.webp",
+      "path": "public/media/gal-bar.webp",
+      "bytes": 50520,
+      "sha256": "d217efd2aacd8f756912aa5eb04475ca7fdcb2813a975aae2cc5bda395fe4403",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-giftbags.webp",
+      "path": "public/media/gal-giftbags.webp",
+      "bytes": 151296,
+      "sha256": "48c0bbf5fe986f95d9921ef09e00461946475ea9da91f57720e2e1dd96290205",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-group-a.webp",
+      "path": "public/media/gal-group-a.webp",
+      "bytes": 82522,
+      "sha256": "329fe5e4f03ed0c997794df29263cde8be6fbc0df6b1e987f3c1dde27d5e962b",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-group-b.webp",
+      "path": "public/media/gal-group-b.webp",
+      "bytes": 59122,
+      "sha256": "844a3049ba52006843f3d1ed44b2c594cb09df7b8aac65b769b2134a7aa0ffa6",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-group-c.webp",
+      "path": "public/media/gal-group-c.webp",
+      "bytes": 61632,
+      "sha256": "7b4a84e6049a5afdef1264a38589b1ff7f5e89c0f6fcec4478852e686b3daa9c",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-lounge-2.webp",
+      "path": "public/media/gal-lounge-2.webp",
+      "bytes": 138528,
+      "sha256": "0b118ef56c591b5f1f0a1c976a781993a653abc7aa8121841338141a4657b371",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-red-dress.webp",
+      "path": "public/media/gal-red-dress.webp",
+      "bytes": 54686,
+      "sha256": "e6f51165a4f3bf7321f1d75b04194429866a3a40eac6db7a2c8bd3c2d9ff2857",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-setup.webp",
+      "path": "public/media/gal-setup.webp",
+      "bytes": 134532,
+      "sha256": "bd2d79d98605746f1455bb1bcec9b53f026fb9aca0a33ef9108da6e552418596",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/gal-trio.webp",
+      "path": "public/media/gal-trio.webp",
+      "bytes": 96704,
+      "sha256": "747388971b526b414d05c08430d6fa21285d3f288d41b2288a953516b1638124",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/logo-navy.png",
+      "path": "public/media/logo-navy.png",
+      "bytes": 108581,
+      "sha256": "e75f0b2719e8476130f8992d0c098ae1deb05a48f69094754fb277b6c2a95f13",
+      "status": 200,
+      "content_type": "image/png"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/logo-white.png",
+      "path": "public/media/logo-white.png",
+      "bytes": 116883,
+      "sha256": "bbfd8262c77c845c46db904323ed4379b3931b17ce24cf45a461d62da972b4a7",
+      "status": 200,
+      "content_type": "image/png"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/reel-galentines-poster.webp",
+      "path": "public/media/reel-galentines-poster.webp",
+      "bytes": 34116,
+      "sha256": "8ca87b127c5ed3766bb5c5b713921eb3dbefa672449882e89068b0696a035b4c",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/reel-galentines.mp4",
+      "path": "public/media/reel-galentines.mp4",
+      "bytes": 3709124,
+      "sha256": "1214f3dfbcfc68ca4c0e90fb2a0f0b0f8a60377b0e131d47b375e3aff3b96c79",
+      "status": 200,
+      "content_type": "video/mp4"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/reel-service-poster.webp",
+      "path": "public/media/reel-service-poster.webp",
+      "bytes": 39154,
+      "sha256": "9c5727790f039387648e61c4a3075aa9b91765df6578a292c514148b3663818c",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/reel-service.mp4",
+      "path": "public/media/reel-service.mp4",
+      "bytes": 7605910,
+      "sha256": "2b70b8dc0381fa3dfebac10e6c4c428cb6d1c308384d28f0a6f2f6e243211a19",
+      "status": 200,
+      "content_type": "video/mp4"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/service-1.webp",
+      "path": "public/media/service-1.webp",
+      "bytes": 315738,
+      "sha256": "a11c0e5c45e8f6d7c9f4334c20f8cd0daf5b5ce45d15841ff883bc4b61b2b70e",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/service-2.webp",
+      "path": "public/media/service-2.webp",
+      "bytes": 99066,
+      "sha256": "9f3de5f7045b87a29c62fe65b7880a5649c4be3760f71526539a4db4f49c7253",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/service-3.webp",
+      "path": "public/media/service-3.webp",
+      "bytes": 104452,
+      "sha256": "553dfc3c9154f589f915a8a6c74a556128b0b580c579975c32a5f1dddb8b5b1b",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/service-4.webp",
+      "path": "public/media/service-4.webp",
+      "bytes": 208724,
+      "sha256": "da6486b7fddcbf654b7e21d45899376935a1732c1a4cd560a00da891b0851086",
+      "status": 200,
+      "content_type": "image/webp"
+    },
+    {
+      "url": "https://abt-social-website.vercel.app/media/service-5.webp",
+      "path": "public/media/service-5.webp",
+      "bytes": 117434,
+      "sha256": "6c9629c255df7330b437b272e85ff2473689ef08836518d1fc8a7f2b5618f2a0",
+      "status": 200,
+      "content_type": "image/webp"
+    }
+  ],
+  "failures": {},
+  "links": [
+    "#faq",
+    "#join",
+    "#pillars",
+    "#socials",
+    "#story",
+    "#top",
+    "https://www.eventbrite.com/e/abt-x-jetset-wellness-charity-pilates-social-tickets-1998973013093",
+    "https://www.instagram.com/abettertomorrowsocial/",
+    "https://www.instagram.com/chickenoodleshoup/",
+    "https://www.instagram.com/therealchristeve/"
+  ],
+  "capture_method": "Original deployed HTML plus recursively discovered same-origin assets from HTML, JavaScript and CSS. CSS paths resolved relative to each stylesheet.",
+  "scope": "Public single-page deployment and all assets referenced by the captured frontend. Private source, historical submissions and server code are not publicly downloadable."
+}
