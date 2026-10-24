@@ -36,22 +36,31 @@ interest in joining.
 
 | Area | Technology |
 | --- | --- |
-| Frontend | HTML, CSS, and JavaScript with React browser assets |
-| Animation | GSAP and Lenis |
+| Frontend | React 19 with editable JSX components and Vite |
+| Animation | CSS transitions and IntersectionObserver, with reduced-motion support |
 | API | Python WSGI application |
 | Inquiry storage | SQLite for local development; optional Google Cloud Firestore |
-| Production server | Nginx and Gunicorn |
-| Containers | Docker Compose |
+| Production hosting | Firebase Hosting and Cloud Run (Gunicorn) |
+| Deployment | GitHub Actions with Workload Identity Federation |
 
 ## Run locally
 
 Use **Python 3.11 or later**. From the repository root:
 
 ```sh
+pnpm install
+pnpm dev
+```
+
+Run the API in a second terminal:
+
+```sh
 python server.py --port 8765
 ```
 
-Open [http://127.0.0.1:8765/](http://127.0.0.1:8765/).
+Open [http://127.0.0.1:5173/](http://127.0.0.1:5173/). Vite proxies API requests to Python.
+Use Node.js 24 and pnpm 11.25.0. `pnpm build` produces `dist/`, which can also be
+served directly by `python server.py`.
 
 The local server serves the frontend and the inquiry endpoint. SQLite is the
 default storage backend, with data saved under `data/`. This mode requires no
@@ -61,10 +70,15 @@ for development; use the production configuration for a public deployment.
 ## Project structure
 
 ```text
-public/
-  index.html                  Main website
-  _next/static/               Frontend scripts, styles, and fonts
-  media/                      Photography and event videos
+src/App.jsx                   Editable React components and interactions
+src/content.json              Club copy and event data
+src/styles.css                Responsive design and motion system
+public/media/                 Original photography and event videos
+public/fonts/                 Locally hosted fonts
+index.html                    Vite entry and metadata
+firebase.json                 Hosting headers and Cloud Run API rewrites
+firestore.rules               Deny all direct client access to private inquiries
+.github/workflows/firebase.yml Tests and automatic deployment on main pushes
 server.py                     Static server and inquiry API
 requirements.txt              Production Python dependencies
 gunicorn.conf.py              Python worker configuration
@@ -161,3 +175,41 @@ python server.py --retry-notifications
 ```
 
 The repository excludes runtime databases, CSV exports, and `.env` files.
+
+## Firebase production
+
+- Website: https://abettertomorrow.web.app
+- Firebase project: `a-better-tomorrow-71ed0`
+- Hosting site ID: `abettertomorrow`
+- API: Cloud Run `abt-api`, region `us-central1`, zero minimum and two maximum instances.
+- Firestore: Standard `(default)` database in `us-central1`, collection `join_submissions`.
+- On every push to `main`, GitHub Actions tests the app and rules, builds React and
+  the Python container, deploys the API, then publishes the website and rules.
+- Workload Identity Federation is restricted to this repository's numeric ID,
+  owner ID, and `refs/heads/main`. No service-account JSON keys are stored in GitHub.
+- `scripts/bootstrap-cloud.sh` records the one-time cloud IAM setup. It is not run
+  on ordinary deployments. The runtime uses `roles/datastore.user`; the deployer
+  can publish Hosting/rules and manage Cloud Run, and can act as only the runtime account.
+- Inquiries stay server-only: even signed-in Firebase users cannot read or write
+  them directly. Server SDKs bypass Firestore Security Rules; Python validates
+  inquiries and runtime IAM controls its access. Firebase Authentication setup
+  does not turn the public inquiry form into a membership login system.
+- Billing has a $10 alert budget. This is an alert, not a spending cap.
+- Unlike the optional Nginx deployment, the direct Cloud Run path has no Nginx
+  per-IP rate limiter. Consider App Check or edge abuse protection as traffic grows.
+- Notifications remain optional and disabled until SMTP is configured.
+
+## Verification
+
+```sh
+pnpm build
+python -m unittest discover -s tests -v
+python verify_capture.py
+npx -y firebase-tools@15.34.1 emulators:exec --only firestore --project demo-abt "node tests/firestore.mjs"
+```
+
+The asset verification checks the 37 preserved photos, videos, icons, and fonts.
+The historical screenshots and capture manifest document the original frontend;
+the compiled Next.js runtime was replaced by the editable React app.
+The Firestore tests use an isolated demo emulator project and perform 28 denial
+checks without touching production data.

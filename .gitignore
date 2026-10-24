@@ -3,3 +3,11 @@ data/
 __pycache__/
 *.sqlite3*
 *.csv
+node_modules/
+dist/
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+gha-creds-*.json
+.expo/

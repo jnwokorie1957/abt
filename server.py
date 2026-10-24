@@ -1,8 +1,8 @@
-"""ABT self-hosted static site and replacement join endpoint (Python 3.11+).
+"""ABT React site and inquiry endpoint (Python 3.11+).
 
 Run locally: python server.py
 Production: gunicorn --config gunicorn.conf.py server:application
-The original frontend files in public/ are deliberately unchanged.
+Run the Vite development server separately, or build the React app first.
 """
 from contextlib import closing
 from datetime import datetime, timezone
@@ -28,7 +28,7 @@ import sys
 import uuid
 
 BASE = Path(__file__).resolve().parent
-PUBLIC = (BASE / 'public').resolve()
+PUBLIC = (BASE / 'dist').resolve()
 DATA = Path(os.environ.get('DATA_DIR', str(BASE / 'data'))).resolve()
 MAX_BODY = 16384
 LOG = logging.getLogger('abt')
@@ -194,7 +194,9 @@ def join(environ, start):
         return json_response(start, 405, {'error': 'Method not allowed.'}, [('Allow', 'POST')])
     # Browsers provide Origin for a JSON POST. Non-browser clients may omit it.
     origin = environ.get('HTTP_ORIGIN', '')
-    if origin and urlsplit(origin).netloc.lower() != environ.get('HTTP_HOST', '').lower():
+    allowed_origins = {value.strip().rstrip('/') for value in os.environ.get('JOIN_ALLOWED_ORIGINS', '').split(',') if value.strip()}
+    same_host = urlsplit(origin).netloc.lower() == environ.get('HTTP_HOST', '').lower()
+    if origin and not same_host and origin.rstrip('/') not in allowed_origins:
         return json_response(start, 403, {'error': 'Origin not allowed.'})
     if environ.get('CONTENT_TYPE', '').split(';')[0].strip().lower() != 'application/json':
         return json_response(start, 415, {'error': 'Expected application/json.'})

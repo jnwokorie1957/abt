@@ -1,0 +1,88 @@
+name: Test and deploy Firebase
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: abt-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PROJECT_ID: a-better-tomorrow-71ed0
+  REGION: us-central1
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm install --global pnpm@11.25.0 firebase-tools@15.34.1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: python -m unittest discover -s tests -v
+      - run: python verify_capture.py
+      - run: firebase emulators:exec --only firestore --project demo-abt "node tests/firestore.mjs"
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - run: npm install --global pnpm@11.25.0 firebase-tools@15.34.1
+      - run: pnpm install --frozen-lockfile && pnpm build
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: projects/1044824727019/locations/global/workloadIdentityPools/abt-github/providers/github
+          service_account: abt-deployer@a-better-tomorrow-71ed0.iam.gserviceaccount.com
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+      - name: Build and push API image
+        run: |
+          gcloud auth configure-docker "$REGION-docker.pkg.dev" --quiet
+          IMAGE="$REGION-docker.pkg.dev/$PROJECT_ID/abt-containers/api:$GITHUB_SHA"
+          docker build --tag "$IMAGE" .
+          docker push "$IMAGE"
+      - name: Deploy Python inquiry API
+        run: |
+          gcloud run deploy abt-api \
+            --project="$PROJECT_ID" --region="$REGION" \
+            --image="$REGION-docker.pkg.dev/$PROJECT_ID/abt-containers/api:$GITHUB_SHA" \
+            --service-account="abt-api@$PROJECT_ID.iam.gserviceaccount.com" \
+            --allow-unauthenticated --min=0 --max=2 --concurrency=20 \
+            --memory=256Mi --cpu=1 --timeout=30 --port=8080 \
+            --set-env-vars="^|^JOIN_STORAGE=firestore|FIRESTORE_PROJECT_ID=$PROJECT_ID|FIRESTORE_DATABASE_ID=(default)|FIRESTORE_COLLECTION=join_submissions|JOIN_ALLOWED_ORIGINS=https://abettertomorrow.web.app,https://abettertomorrow.firebaseapp.com" \
+            --quiet
+      - name: Deploy private Firestore rules and React website
+        run: firebase deploy --only firestore:rules,hosting --project "$PROJECT_ID" --non-interactive
+      - name: Verify live deployment
+        run: |
+          curl --fail --retry 5 --retry-all-errors --retry-delay 5 https://abettertomorrow.web.app/healthz
+          curl --fail --retry 5 --retry-all-errors --retry-delay 5 https://abettertomorrow.web.app/ | grep -q 'A Better Tomorrow Social'

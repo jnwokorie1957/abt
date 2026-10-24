@@ -5,3 +5,9 @@ data
 *.csv
 __pycache__
 *.zip
+node_modules
+dist
+mobile
+.git
+.firebase
+gha-creds-*.json
