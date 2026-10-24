@@ -68,18 +68,11 @@
     ],
     "rewrites": [
       {
-        "source": "/api/**",
+        "regex": "^/(api/.*|healthz)$",
         "run": {
           "serviceId": "abt-api",
           "region": "us-central1",
           "pinTag": true
-        }
-      },
-      {
-        "source": "/healthz",
-        "run": {
-          "serviceId": "abt-api",
-          "region": "us-central1"
         }
       }
     ]
