@@ -84,5 +84,10 @@ jobs:
         run: firebase deploy --only firestore:rules,hosting --project "$PROJECT_ID" --non-interactive
       - name: Verify live deployment
         run: |
-          curl --fail --retry 5 --retry-all-errors --retry-delay 5 https://abettertomorrow.web.app/healthz
+          STATUS=$(curl --silent --show-error --retry 5 --retry-all-errors --retry-delay 5 \
+            --output /tmp/abt-api-probe.json --write-out "%{http_code}" \
+            -H "Content-Type: application/json" -H "Origin: https://abettertomorrow.web.app" \
+            --data '{}' https://abettertomorrow.web.app/api/join)
+          test "$STATUS" = "400"
+          grep -q 'Please check your details and answers' /tmp/abt-api-probe.json
           curl --fail --retry 5 --retry-all-errors --retry-delay 5 https://abettertomorrow.web.app/ | grep -q 'A Better Tomorrow Social'

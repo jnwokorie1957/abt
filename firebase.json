@@ -68,7 +68,7 @@
     ],
     "rewrites": [
       {
-        "regex": "^/(api/.*|healthz)$",
+        "source": "/api/**",
         "run": {
           "serviceId": "abt-api",
           "region": "us-central1",
