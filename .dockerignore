@@ -1,0 +1,7 @@
+public
+data
+.env
+*.sqlite3*
+*.csv
+__pycache__
+*.zip
