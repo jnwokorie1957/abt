@@ -5,7 +5,10 @@ centered on connection, empowerment, and giving back. The experience introduces
 the club, celebrates its gatherings, and helps visitors find events and express
 interest in joining.
 
-## Screenshots
+The live website is [abettertomorrow.web.app](https://abettertomorrow.web.app).
+The Expo companion app lives in [`mobile/`](mobile/README.md).
+
+## Original capture screenshots
 
 ### Desktop
 
@@ -30,7 +33,7 @@ interest in joining.
 - A three-question membership and partnership inquiry quiz.
 - Links to the club's Instagram and event tickets.
 - Local fonts, images, icons, and video assets.
-- Sky, pink, and navy accent themes selected on page load.
+- Cream, rose, sky, and navy sections with blended gradient boundaries.
 
 ## Technology
 
@@ -79,6 +82,8 @@ index.html                    Vite entry and metadata
 firebase.json                 Hosting headers and Cloud Run API rewrites
 firestore.rules               Deny all direct client access to private inquiries
 .github/workflows/firebase.yml Tests and automatic deployment on main pushes
+mobile/                       Expo Router / React Native companion app
+.github/workflows/mobile.yml   Mobile lint, types and platform exports
 server.py                     Static server and inquiry API
 requirements.txt              Production Python dependencies
 gunicorn.conf.py              Python worker configuration
@@ -144,9 +149,11 @@ The inquiry is saved before notification delivery is attempted.
 With Docker and Docker Compose installed:
 
 1. Copy `.env.example` to `.env` and configure the required settings.
-2. Run the services:
+2. Build the frontend, then run the services:
 
    ```sh
+   pnpm install --frozen-lockfile
+   pnpm build
    docker compose up -d --build
    ```
 

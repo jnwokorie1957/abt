@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "A Better Tomorrow",
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#F8F4EC"
+      },
+      "package": "com.abettertomorrow.social"
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "icon": "./assets/icon.png",
+    "backgroundColor": "#F8F4EC",
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/icon.png",
+      "output": "single",
+      "name": "A Better Tomorrow Social",
+      "shortName": "ABT Social"
+    },
+    "userInterfaceStyle": "light",
+    "version": "1.0.0",
+    "slug": "abt-social",
+    "ios": {
+      "bundleIdentifier": "com.abettertomorrow.social",
+      "supportsTablet": true
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-splash-screen"
+    ],
+    "orientation": "portrait",
+    "scheme": "abt-social"
+  }
+}
