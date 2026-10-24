@@ -8,11 +8,22 @@ import { ActivityIndicator, Animated, Easing, Linking, Platform, Pressable, Scro
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors as c, fonts as f } from '../theme';
 import { useClub } from '../providers/ClubProvider';
+import { Arrow } from './Arrow';
 
 export const SITE = 'https://abettertomorrow.web.app';
 export const media = (path: string) => `${SITE}${path}`;
+function Glyph({ name, size, color }: { name: React.ComponentProps<typeof Feather>['name']; size: number; color: string }) {
+  if (name === 'arrow-up-right' || name === 'arrow-left' || name === 'arrow-right') {
+    return <Arrow direction={name === 'arrow-left' ? 'left' : name === 'arrow-right' ? 'right' : 'up-right'} size={size} color={color} />;
+  }
+  return <Feather name={name} size={size} color={color} />;
+}
 export function T({ children, style, serif = false, italic = false, ...rest }: React.ComponentProps<typeof Text> & { serif?: boolean; italic?: boolean }) {
-  return <Text {...rest} style={[{ fontFamily: italic ? f.italic : serif ? f.serif : f.body, color: c.navy, fontSize: 15, lineHeight: 23 }, style]}>{children}</Text>;
+  const textStyle = StyleSheet.flatten([{ fontFamily: italic ? f.italic : serif ? f.serif : f.body, color: c.navy, fontSize: 15, lineHeight: 23, overflow: 'visible' } satisfies TextStyle, style]);
+  // Both bundled font families need about 1.30em for their ascent and descent.
+  // A body-sized or tightly set line box clips their glyphs in native iOS Text.
+  const lineHeight = Math.max(textStyle.lineHeight ?? 0, Math.ceil((textStyle.fontSize ?? 15) * 1.31));
+  return <Text {...rest} style={[textStyle, { lineHeight }]}>{children}</Text>;
 }
 export function Label({ children, style }: { children: React.ReactNode; style?: StyleProp<TextStyle> }) {
   return <T style={[{ fontFamily: f.bold, fontSize: 10, lineHeight: 16, letterSpacing: 2, textTransform: 'uppercase' }, style]}>{children}</T>;
@@ -29,11 +40,11 @@ export function Tap({ children, style, onPress, ...props }: PressableProps & { s
 export function Button({ title, onPress, light = false, busy = false, disabled = false, icon = 'arrow-up-right' }: { title: string; onPress: () => void; light?: boolean; busy?: boolean; disabled?: boolean; icon?: React.ComponentProps<typeof Feather>['name'] }) {
   return <Tap disabled={disabled || busy} onPress={onPress} style={[s.button, { backgroundColor: light ? c.paper : c.navy }]}>
     <T style={{ color: light ? c.navy : c.paper, fontFamily: f.bold, flex: 1 }}>{title}</T>
-    {busy ? <ActivityIndicator color={light ? c.navy : c.paper} /> : <Feather name={icon} size={19} color={light ? c.navy : c.paper} />}
+    {busy ? <ActivityIndicator color={light ? c.navy : c.paper} /> : <Glyph name={icon} size={19} color={light ? c.navy : c.paper} />}
   </Tap>;
 }
 export function IconButton({ name, label, onPress, selected = false, disabled = false }: { name: React.ComponentProps<typeof Feather>['name']; label: string; onPress: () => void; selected?: boolean; disabled?: boolean }) {
-  return <Tap accessibilityLabel={label} accessibilityState={{ selected, disabled }} disabled={disabled} onPress={onPress} style={[s.iconButton, selected && { backgroundColor: c.rose }]}><Feather name={name} size={20} color={c.navy} /></Tap>;
+  return <Tap accessibilityLabel={label} accessibilityState={{ selected, disabled }} disabled={disabled} onPress={onPress} style={[s.iconButton, selected && { backgroundColor: c.rose }]}><Glyph name={name} size={20} color={c.navy} /></Tap>;
 }
 export function Fade({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) {
   const { reducedMotion } = useClub();
@@ -58,7 +69,7 @@ export function Screen({ children, modal = false }: { children: React.ReactNode;
   </View>;
 }
 export function Header({ title = 'a better\ntomorrow', back = false }: { title?: string; back?: boolean }) {
-  return <View style={s.row}>{back ? <IconButton name="arrow-left" label="Go back" onPress={() => router.canGoBack() ? router.back() : router.replace('/')} /> : <T serif style={{ fontSize: 25, lineHeight: 23, letterSpacing: -1 }}>{title}<T style={{ fontSize: 10 }}> ®</T></T>}
+  return <View style={s.row}>{back ? <IconButton name="arrow-left" label="Go back" onPress={() => router.canGoBack() ? router.back() : router.replace('/')} /> : <T serif style={{ fontSize: 25, lineHeight: 23, letterSpacing: -1, flexShrink: 1 }}>{title}<T style={{ fontSize: 10 }}> ®</T></T>}
     <View style={{ flex: 1 }} />{back ? <Label>ABT SOCIAL CLUB</Label> : <View style={s.city}><View style={{ width: 5, height: 5, borderRadius: 4, backgroundColor: c.navy }} /><Label style={{ fontSize: 9, letterSpacing: 1 }}>Houston, TX</Label></View>}
   </View>;
 }

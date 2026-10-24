@@ -1,3 +1,4 @@
+import { Arrow } from '../../components/Arrow';
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -22,12 +23,12 @@ function Answer({ question, answer, index }: { question: string; answer: string;
   </View>;
 }
 export default function Club() {
-  return <Screen><Header /><Fade style={{ gap: 13 }}><Label>There’s purpose behind the party</Label><T serif style={s.title}>We gather.{ '\n' }We give<T italic style={s.title}>.</T></T><T style={{ color: c.muted }}>{data.story.lead}</T></Fade>
+  return <Screen><Header /><Fade style={{ gap: 13 }}><Label>About the club</Label><T serif style={s.title}>We gather.{ '\n' }We give back<T italic style={s.title}>.</T></T><T style={{ color: c.muted }}>{data.story.lead}</T></Fade>
     <Photo path="/media/service-4.webp" alt="ABT sisterhood lunch" style={{ aspectRatio: 1.15 }} />
     <View style={{ gap: 16 }}>{data.story.body.map(paragraph => <T key={paragraph} style={{ color: c.muted }}>{paragraph}</T>)}</View>
-    <View style={{ gap: 12 }}><Label>The things that bring us together</Label>{data.whyJoin.cards.map((card, index) => <View key={card.title} style={[s.row, { alignItems: 'flex-start', paddingVertical: 12 }]}><View style={{ width: 43, height: 43, borderRadius: 23, alignItems: 'center', justifyContent: 'center', backgroundColor: [c.rose, c.sky, c.sage, c.blush][index] }}><Feather name={(['users', 'heart', 'star', 'globe'] as const)[index]} size={20} color={c.navy} /></View><View style={{ flex: 1, gap: 5 }}><T style={{ fontFamily: f.bold }}>{card.title}</T><T style={{ color: c.muted, fontSize: 13, lineHeight: 21 }}>{card.text}</T></View></View>)}</View>
-    <View style={[s.card, { backgroundColor: c.navy }]}><T serif style={{ color: c.rose, fontSize: 53, lineHeight: 40 }}>“</T><T italic style={{ color: c.paper, fontSize: 26, lineHeight: 31 }}>{data.testimonial.quote}</T><Label style={{ color: c.sky }}>With love, Daya Houston</Label></View>
-    <View style={{ gap: 20 }}><Label>The curiosity corner</Label><T serif style={s.sectionTitle}>Little questions,{ '\n' }big answers<T italic style={s.sectionTitle}>.</T></T>{data.faq.items.map((item, index) => <Answer key={item.q} question={item.q} answer={item.a} index={index} />)}</View>
-    <View style={{ gap: 16 }}><T serif style={s.sectionTitle}>A seat for you.</T><T style={{ color: c.muted }}>Friend, volunteer, local business, or nonprofit — tell us what brings you here.</T><Button title="Say hello to ABT" onPress={() => router.push('/join')} /><Tap onPress={() => { void openLink(data.site.instagram); }} style={{ padding: 10 }}><T style={{ textAlign: 'center', fontSize: 12 }}>{data.site.handle} ↗</T></Tap></View>
+    <View style={{ gap: 12 }}><Label>Why join us?</Label>{data.whyJoin.cards.map((card, index) => <View key={card.title} style={[s.row, { alignItems: 'flex-start', paddingVertical: 12 }]}><View style={{ width: 43, height: 43, borderRadius: 23, alignItems: 'center', justifyContent: 'center', backgroundColor: [c.rose, c.sky, c.sage, c.blush][index] }}><Feather name={(['users', 'heart', 'star', 'globe'] as const)[index]} size={20} color={c.navy} /></View><View style={{ flex: 1, gap: 5 }}><T style={{ fontFamily: f.bold }}>{card.title}</T><T style={{ color: c.muted, fontSize: 13, lineHeight: 21 }}>{card.text}</T></View></View>)}</View>
+    <View style={[s.card, { backgroundColor: c.navy }]}><T serif style={{ color: c.rose, fontSize: 53, lineHeight: 40 }}>“</T><T italic style={{ color: c.paper, fontSize: 26, lineHeight: 31 }}>{data.testimonial.quote}</T><Label style={{ color: c.sky }}>{data.testimonial.by}</Label></View>
+    <View style={{ gap: 20 }}><Label>Before you join us</Label><T serif style={s.sectionTitle}>A few{ '\n' }questions<T italic style={s.sectionTitle}>.</T></T>{data.faq.items.map((item, index) => <Answer key={item.q} question={item.q} answer={item.a} index={index} />)}</View>
+    <View style={{ gap: 16 }}><T serif style={s.sectionTitle}>Say hello to ABT.</T><T style={{ color: c.muted }}>Ask about membership, volunteering or partnering with the club. We’d love to hear from you.</T><Button title="Get in touch" onPress={() => router.push('/join')} /><Tap onPress={() => { void openLink(data.site.instagram); }} style={[s.row, { justifyContent: 'center', padding: 10 }]}><T style={{ textAlign: 'center', fontSize: 12 }}>{data.site.handle}</T><Arrow size={16} /></Tap></View>
   </Screen>;
 }
