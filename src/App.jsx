@@ -1,8 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import content from './content.json';
 import Arrow from './Arrow';
+import Calendar from './Calendar';
+import { Causes, Partnerships } from './Community';
 
 const { site, faq, join, socials, pillars, story, steps, partners, testimonial, whyJoin } = content;
+const nav = [
+  ...content.nav.slice(0, 2),
+  { label: 'Calendar', href: '/calendar' },
+  ...content.nav.slice(2, 4),
+  { label: 'Partner with ABT', href: '#partner' },
+  ...content.nav.slice(4),
+];
 const Star = ({ className = '' }) => <svg aria-hidden="true" className={`star ${className}`} viewBox="0 0 100 100"><path d="M50 0 59 32 85 15 68 41 100 50 68 59 85 85 59 68 50 100 41 68 15 85 32 59 0 50 32 41 15 15 41 32Z" fill="currentColor" /></svg>;
 const Eyebrow = ({ children, light = false }) => <p className={`eyebrow ${light ? 'light' : ''}`}><span />{children}</p>;
 const Photo = ({ src, alt, priority = false, ...props }) => <img src={src} alt={alt} loading={priority ? 'eager' : 'lazy'} decoding="async" fetchPriority={priority ? 'high' : 'auto'} {...props} />;
@@ -18,7 +27,7 @@ function useReveal() {
   }, []);
 }
 
-function Header({ onJoin }) {
+function Header({ onJoin, calendar }) {
   const [open, setOpen] = useState(false);
   const menu = useRef(null);
   const toggle = useRef(null);
@@ -39,17 +48,19 @@ function Header({ onJoin }) {
     window.addEventListener('keydown', key);
     return () => { document.body.style.overflow = oldOverflow; window.removeEventListener('keydown', key); };
   }, [open]);
+  const navHref = href => calendar && href.startsWith('#') ? `/${href}` : href;
+  const currentPage = href => calendar && href === '/calendar' ? 'page' : undefined;
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="site-header">
-      <a href="#top" className="brand" aria-label="A Better Tomorrow Social, home"><img src="/media/logo-navy.png" alt="" /><span>A BETTER<br />TOMORROW <small>SOCIAL</small></span></a>
-      <nav aria-label="Main navigation" className="desktop-nav">{content.nav.slice(0, 4).map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>
+      <a href={navHref('#top')} className="brand" aria-label="A Better Tomorrow Social, home"><img src="/media/logo-navy.png" alt="" /><span>A BETTER<br />TOMORROW <small>SOCIAL</small></span></a>
+      <nav aria-label="Main navigation" className="desktop-nav">{nav.slice(0, -1).map(link => <a key={link.href} href={navHref(link.href)} aria-current={currentPage(link.href)}>{link.label}</a>)}</nav>
       <div className="header-actions"><button className="button small" onClick={onJoin}>Ask about joining <Arrow /></button><button ref={toggle} className="menu-toggle" aria-label="Open menu" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(true)}><span /><span /></button></div>
     </header>
     <div id="mobile-menu" ref={menu} className={`mobile-menu ${open ? 'is-open' : ''}`} role={open ? 'dialog' : undefined} aria-modal={open ? true : undefined} aria-label="Navigation" inert={!open ? true : undefined} aria-hidden={!open}>
       <button className="menu-close" onClick={() => { setOpen(false); toggle.current.focus(); }} aria-label="Close menu">×</button>
       <Eyebrow light>Explore ABT</Eyebrow>
-      {content.nav.map((link, index) => <a key={link.href} href={link.href} onClick={() => setOpen(false)}><span>0{index + 1}</span>{link.label}<Arrow /></a>)}
+      {nav.map((link, index) => <a key={link.href} href={navHref(link.href)} aria-current={currentPage(link.href)} onClick={() => setOpen(false)}><span>0{index + 1}</span>{link.label}<Arrow /></a>)}
       <p className="serif">Here’s to a better tomorrow.</p>
     </div>
   </>;
@@ -98,7 +109,7 @@ function EventCard({ event, index }) {
 }
 
 function Socials() {
-  return <section id="socials" className="socials section-pad"><div className="section-heading" data-reveal><div><Eyebrow>02 / Past socials</Eyebrow><h2>A few days<br /><em>with ABT.</em></h2></div><div className="section-aside"><p>A look back at the soirées, service days and wellness mornings we’ve shared.</p><a className="text-link" href={site.instagram} target="_blank" rel="noreferrer">Find the next social <Arrow /></a></div></div><div className="event-grid">{socials.map((event, index) => <EventCard key={event.slug} event={event} index={index} />)}</div><p className="archive-note">These socials have already happened. Check Instagram for new dates and booking details.</p></section>;
+  return <section id="socials" className="socials section-pad"><div className="section-heading" data-reveal><div><Eyebrow>02 / Past socials</Eyebrow><h2>A few days<br /><em>with ABT.</em></h2></div><div className="section-aside"><p>A look back at the soirées, service days and wellness mornings we’ve shared.</p><a className="text-link" href="/calendar">Find the next social <Arrow /></a></div></div><div className="event-grid">{socials.map((event, index) => <EventCard key={event.slug} event={event} index={index} />)}</div><p className="archive-note">These socials have already happened. Check Instagram for new dates and booking details.</p></section>;
 }
 
 function Pillars() {
@@ -117,8 +128,12 @@ function HowItWorks() {
 
 function FAQ({ onJoin }) {
   const [active, setActive] = useState(0);
+  const webAnswers = {
+    1: <>Check the <a className="faq-inline-link" href="/calendar">ABT calendar</a> for upcoming events and registration details. Ticket availability depends on the event.</>,
+    4: <>We’d love to hear from you. <a className="faq-inline-link" href="#sponsor">Ask about sponsorship</a> or <a className="faq-inline-link" href="#venue">tell us about your venue</a>.</>,
+  };
   const labels = ['WHO IT’S FOR', 'TICKETS', 'THE CAUSES', 'MEMBERSHIP', 'PARTNERSHIPS', 'WHAT TO BRING'];
-  return <section id="faq" className="faq section-pad"><div className="faq-intro" data-reveal><Eyebrow>04 / A few questions</Eyebrow><h2>Glad<br />you <em>asked.</em></h2><p>Tickets, membership and what to bring. Here’s what to know before you join us.</p><div className="faq-note"><Star /><span className="handwritten">Joining or<br />working together?</span><span className="note-rule" /><p>Tell us what brings<br />you to ABT.</p><button className="text-link" onClick={onJoin}>Send an inquiry <Arrow /></button></div></div><div className="faq-stack" data-reveal>{faq.items.map((item, index) => <article key={item.q} className={`faq-card faq-color-${index % 3} ${active === index ? 'expanded' : ''}`}><button onClick={() => setActive(active === index ? null : index)} aria-expanded={active === index} aria-controls={`faq-answer-${index}`} id={`faq-question-${index}`}><span className="faq-card-top"><span className="faq-number">0{index + 1}</span><span className="faq-topic">{labels[index]}</span><span className="faq-toggle">+</span></span><span className="faq-question">{item.q}</span></button><div id={`faq-answer-${index}`} role="region" aria-labelledby={`faq-question-${index}`} className="faq-answer" inert={active !== index ? true : undefined} aria-hidden={active !== index}><div><p>{item.a}</p></div></div></article>)}</div></section>;
+  return <section id="faq" className="faq section-pad"><div className="faq-intro" data-reveal><Eyebrow>04 / A few questions</Eyebrow><h2>Glad<br />you <em>asked.</em></h2><p>Tickets, membership and what to bring. Here’s what to know before you join us.</p><div className="faq-note"><Star /><span className="handwritten">Joining or<br />working together?</span><span className="note-rule" /><p>Tell us what brings<br />you to ABT.</p><button className="text-link" onClick={onJoin}>Send an inquiry <Arrow /></button></div></div><div className="faq-stack" data-reveal>{faq.items.map((item, index) => <article key={item.q} className={`faq-card faq-color-${index % 3} ${active === index ? 'expanded' : ''}`}><button onClick={() => setActive(active === index ? null : index)} aria-expanded={active === index} aria-controls={`faq-answer-${index}`} id={`faq-question-${index}`}><span className="faq-card-top"><span className="faq-number">0{index + 1}</span><span className="faq-topic">{labels[index]}</span><span className="faq-toggle">+</span></span><span className="faq-question">{item.q}</span></button><div id={`faq-answer-${index}`} role="region" aria-labelledby={`faq-question-${index}`} className="faq-answer" inert={active !== index ? true : undefined} aria-hidden={active !== index}><div><p>{webAnswers[index] ?? item.a}</p></div></div></article>)}</div></section>;
 }
 
 function Join({ onJoin }) {
@@ -154,6 +169,35 @@ function JoinDialog({ onClose }) {
 
 export default function App() {
   const [joining, setJoining] = useState(false);
+  const calendar = /^\/calendar\/?$/.test(window.location.pathname);
+  const onJoin = () => setJoining(true);
   useReveal();
-  return <><Header onJoin={() => setJoining(true)} /><main id="main"><Hero onJoin={() => setJoining(true)} /><Story /><Socials /><Pillars /><WhyJoin /><HowItWorks /><FAQ onJoin={() => setJoining(true)} /></main><Join onJoin={() => setJoining(true)} />{joining && <JoinDialog onClose={() => setJoining(false)} />}</>;
+  useEffect(() => {
+    if (calendar) document.title = 'Calendar | A Better Tomorrow Social';
+    const target = document.getElementById(window.location.hash.slice(1));
+    if (target) {
+      const frame = requestAnimationFrame(() => target.scrollIntoView());
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [calendar]);
+  return <>
+    <Header onJoin={onJoin} calendar={calendar} />
+    <main id="main">
+      {calendar ? <Calendar /> : <>
+        <Hero onJoin={onJoin} />
+        <Story />
+        <Socials />
+        <Pillars />
+        <Causes />
+        <WhyJoin />
+        <Partnerships />
+        <HowItWorks />
+        <FAQ onJoin={onJoin} />
+      </>}
+    </main>
+    {calendar
+      ? <footer className="calendar-footer"><a className="brand" href="/">A BETTER TOMORROW SOCIAL <Arrow /></a><span>Houston, Texas</span></footer>
+      : <Join onJoin={onJoin} />}
+    {joining && <JoinDialog onClose={() => setJoining(false)} />}
+  </>;
 }

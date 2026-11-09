@@ -5,7 +5,7 @@ Production: gunicorn --config gunicorn.conf.py server:application
 Run the Vite development server separately, or build the React app first.
 """
 from contextlib import closing
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from email.message import EmailMessage
 from email.utils import formatdate, parseaddr
 from functools import lru_cache
@@ -32,6 +32,16 @@ PUBLIC = (BASE / 'dist').resolve()
 DATA = Path(os.environ.get('DATA_DIR', str(BASE / 'data'))).resolve()
 MAX_BODY = 16384
 LOG = logging.getLogger('abt')
+INQUIRY_FIELDS = {
+    'sponsor': (('organization', 'Business or organization', 160, True),
+                ('details', 'Sponsorship idea', 1000, True)),
+    'venue': (('organization', 'Venue or business', 160, True),
+              ('location', 'Venue address or neighborhood', 200, True),
+              ('capacity', 'Guest capacity', 60, False),
+              ('details', 'Hosting details', 1000, True)),
+    'cause': (('organization', 'Cause or organization', 160, True),
+              ('details', 'Why ABT should support it', 1000, True)),
+}
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('font/woff2', '.woff2')
 mimetypes.add_type('image/webp', '.webp')
@@ -45,14 +55,17 @@ def storage_backend():
 
 
 @lru_cache(maxsize=1)
-def firestore_collection():
+def firestore_client():
     # Optional dependency. Local preview does not need Google libraries or credentials.
     from google.cloud import firestore
     project = os.environ.get('FIRESTORE_PROJECT_ID')
     if not project:
         raise ValueError('FIRESTORE_PROJECT_ID is required for Firestore storage.')
-    client = firestore.Client(project=project, database=os.environ.get('FIRESTORE_DATABASE_ID', '(default)'))
-    return client.collection(os.environ.get('FIRESTORE_COLLECTION', 'join_submissions'))
+    return firestore.Client(project=project, database=os.environ.get('FIRESTORE_DATABASE_ID', '(default)'))
+
+
+def firestore_collection():
+    return firestore_client().collection(os.environ.get('FIRESTORE_COLLECTION', 'join_submissions'))
 
 
 def save_submission(row):
@@ -63,8 +76,8 @@ def save_submission(row):
         return
     with closing(database()) as db, db:
         db.execute('''INSERT INTO submissions
-            (id, submitted_at, name, email, instagram, answers, notification_status)
-            VALUES (:id, :submitted_at, :name, :email, :instagram, :answers, :notification_status)''', row)
+            (id, submitted_at, kind, name, email, instagram, answers, notification_status)
+            VALUES (:id, :submitted_at, :kind, :name, :email, :instagram, :answers, :notification_status)''', row)
 
 
 def update_notification(reference, status, error=None):
@@ -84,6 +97,7 @@ def saved_rows():
         rows = [document.to_dict() for document in firestore_collection().order_by('submitted_at').stream(timeout=30)]
         for row in rows:
             row['answers'] = json.dumps(row['answers'], ensure_ascii=False)
+            row.setdefault('kind', 'join')
             row.setdefault('notified_at', None)
             row.setdefault('notification_error', None)
         return rows
@@ -97,11 +111,15 @@ def database():
     db.row_factory = sqlite3.Row
     db.execute('PRAGMA journal_mode=WAL')
     db.execute('''CREATE TABLE IF NOT EXISTS submissions (
-        id TEXT PRIMARY KEY, submitted_at TEXT NOT NULL,
+        id TEXT PRIMARY KEY, submitted_at TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'join',
         name TEXT NOT NULL, email TEXT NOT NULL, instagram TEXT NOT NULL,
         answers TEXT NOT NULL, notification_status TEXT NOT NULL,
         notified_at TEXT, notification_error TEXT)''')
-    db.commit()
+    if not any(column['name'] == 'kind' for column in db.execute('PRAGMA table_info(submissions)')):
+        with db:
+            db.execute('BEGIN IMMEDIATE')
+            if not any(column['name'] == 'kind' for column in db.execute('PRAGMA table_info(submissions)')):
+                db.execute("ALTER TABLE submissions ADD COLUMN kind TEXT NOT NULL DEFAULT 'join'")
     return db
 
 
@@ -114,13 +132,16 @@ def notify(row):
     if not smtp_configured():
         return False
     message = EmailMessage()
-    message['Subject'] = 'New ABT Social join inquiry'
+    message['Subject'] = 'New ABT Social ' + {
+        'sponsor': 'sponsor inquiry', 'venue': 'venue inquiry', 'cause': 'cause suggestion',
+    }.get(row['kind'], 'join inquiry')
     message['From'] = os.environ['MAIL_FROM']
     message['To'] = os.environ['JOIN_TO_EMAIL']
-    message['Reply-To'] = row['email']
+    if row['email']:
+        message['Reply-To'] = row['email']
     answers = json.loads(row['answers'])
     message.set_content('\n'.join([
-        'A Better Tomorrow Social - new join inquiry',
+        message['Subject'],
         f"Reference: {row['id']}", f"Received: {row['submitted_at']}",
         f"Name: {row['name']}", f"Email: {row['email']}",
         f"Instagram: {row['instagram']}", '',
@@ -151,20 +172,29 @@ def notify(row):
         return False
 
 
-def validate(payload):
+def validate(payload, kind='join'):
     if not isinstance(payload, dict):
         raise ValueError('Expected an object.')
-    def text(key, limit, required=True):
+    def text(key, limit, required=True, multiline=False):
         value = payload.get(key, '')
         if not isinstance(value, str):
             raise ValueError(f'Invalid {key}.')
         value = value.strip()
-        if len(value) > limit or (required and not value) or any(ord(c) < 32 for c in value):
+        if len(value) > limit or (required and not value) or any(
+                ord(c) < 32 and not (multiline and c in '\r\n\t') for c in value):
             raise ValueError(f'Invalid {key}.')
         return value
-    name, email, instagram = text('name', 120), text('email', 254), text('instagram', 100, False)
-    if not re.fullmatch(r'[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+', email) or parseaddr(email)[1] != email:
+    name, email = text('name', 120, kind != 'cause'), text('email', 254, kind != 'cause')
+    if email and (not re.fullmatch(r'[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+', email) or parseaddr(email)[1] != email):
         raise ValueError('Invalid email.')
+    if kind != 'join':
+        answers = []
+        for key, label, limit, required in INQUIRY_FIELDS[kind]:
+            answer = text(key, limit, required, multiline=key == 'details')
+            if answer:
+                answers.append({'q': label, 'a': answer})
+        return name, email, '', answers
+    instagram = text('instagram', 100, False)
     answers = payload.get('answers')
     if not isinstance(answers, list) or len(answers) != 3:
         raise ValueError('Please answer all three questions.')
@@ -189,7 +219,7 @@ def json_response(start, code, value, extra=()):
     return [body]
 
 
-def join(environ, start):
+def join(environ, start, kind='join'):
     if environ['REQUEST_METHOD'] != 'POST':
         return json_response(start, 405, {'error': 'Method not allowed.'}, [('Allow', 'POST')])
     # Browsers provide Origin for a JSON POST. Non-browser clients may omit it.
@@ -208,23 +238,77 @@ def join(environ, start):
         return json_response(start, 413, {'error': 'Request body is missing or too large.'})
     try:
         payload = json.loads(environ['wsgi.input'].read(length).decode('utf-8'))
-        name, email, instagram, answers = validate(payload)
+        name, email, instagram, answers = validate(payload, kind)
     except (ValueError, UnicodeError):
         return json_response(start, 400, {'error': 'Please check your details and answers.'})
     row = {
         'id': str(uuid.uuid4()), 'submitted_at': datetime.now(timezone.utc).isoformat(),
-        'name': name, 'email': email, 'instagram': instagram,
+        'kind': kind, 'name': name, 'email': email, 'instagram': instagram,
         'answers': json.dumps(answers, ensure_ascii=False),
         'notification_status': 'pending' if smtp_configured() else 'not_configured',
     }
     try:
         save_submission(row)
     except Exception as error:
-        LOG.error('Unable to save join submission (%s).', type(error).__name__)
+        LOG.error('Unable to save %s submission (%s).', kind, type(error).__name__)
         return json_response(start, 503, {'error': 'Unable to save your inquiry. Please try again.'})
     notify(row)
     # The original frontend checks response.ok; success follows durable storage.
     return json_response(start, 201, {'ok': True, 'id': row['id']})
+
+
+def month_events(month):
+    first, last = f'{month}-01', f'{month}-31'
+    if storage_backend() == 'firestore':
+        from google.cloud.firestore_v1.base_query import FieldFilter
+        documents = firestore_client().collection('calendar_events').where(
+            filter=FieldFilter('date', '>=', first)).where(
+            filter=FieldFilter('date', '<=', last)).stream(timeout=10)
+        rows = ((doc.id, doc.to_dict()) for doc in documents)
+    else:
+        try:
+            items = json.loads((DATA / 'calendar_events.json').read_text(encoding='utf-8'))
+        except FileNotFoundError:
+            items = []
+        rows = enumerate(items)
+    events = []
+    for reference, row in rows:
+        day, title = row.get('date'), row.get('title')
+        if not isinstance(day, str) or not first <= day <= last or not isinstance(title, str) or not title.strip():
+            continue
+        try:
+            if date.fromisoformat(day).isoformat() != day:
+                continue
+        except ValueError:
+            continue
+        event = {'id': str(reference), 'date': day, 'title': title.strip()}
+        for key in ('time', 'location', 'description'):
+            if isinstance(row.get(key), str) and row[key].strip():
+                event[key] = row[key].strip()
+        link = row.get('url')
+        if isinstance(link, str):
+            try:
+                parsed = urlsplit(link)
+                if parsed.scheme == 'https' and parsed.hostname and not parsed.username:
+                    event['url'] = link
+            except ValueError:
+                pass
+        events.append(event)
+    return sorted(events, key=lambda event: (event['date'], event['title'], event['id']))
+
+
+def calendar_events(environ, start):
+    if environ['REQUEST_METHOD'] != 'GET':
+        return json_response(start, 405, {'error': 'Method not allowed.'}, [('Allow', 'GET')])
+    query = environ.get('QUERY_STRING', '')
+    if not re.fullmatch(r'month=[0-9]{4}-(0[1-9]|1[0-2])', query) or query.startswith('month=0000'):
+        return json_response(start, 400, {'error': 'Use month=YYYY-MM.'})
+    try:
+        events = month_events(query.removeprefix('month='))
+    except Exception as error:
+        LOG.error('Unable to load calendar events (%s).', type(error).__name__)
+        return json_response(start, 503, {'error': 'Unable to load calendar events.'})
+    return json_response(start, 200, {'events': events})
 
 
 def static(environ, start):
@@ -233,7 +317,8 @@ def static(environ, start):
         return json_response(start, 405, {'error': 'Method not allowed.'}, [('Allow', 'GET, HEAD')])
     request_path = environ.get('PATH_INFO', '/')
     try:
-        file = (PUBLIC / (request_path.lstrip('/') or 'index.html')).resolve()
+        relative_path = 'index.html' if request_path in ('/', '/calendar', '/calendar/') else request_path.lstrip('/')
+        file = (PUBLIC / relative_path).resolve()
         if not file.is_relative_to(PUBLIC) or not file.is_file() or any(p.startswith('.') for p in file.relative_to(PUBLIC).parts):
             return json_response(start, 404, {'error': 'Not found.'})
         info = file.stat()
@@ -284,6 +369,11 @@ def application(environ, start_response):
     path = environ.get('PATH_INFO', '/')
     if path == '/api/join':
         return join(environ, start_response)
+    kind = path.removeprefix('/api/inquiries/')
+    if path.startswith('/api/inquiries/') and kind in INQUIRY_FIELDS:
+        return join(environ, start_response, kind)
+    if path == '/api/calendar':
+        return calendar_events(environ, start_response)
     if path == '/healthz' and environ['REQUEST_METHOD'] in ('GET', 'HEAD'):
         if environ['REQUEST_METHOD'] == 'HEAD':
             start_response('200 OK', [('Content-Length', '0')])
@@ -308,7 +398,7 @@ def main():
     if args.export_csv:
         with open(args.export_csv, 'w', newline='', encoding='utf-8-sig') as output:
             rows = saved_rows()
-            fields = ['id', 'submitted_at', 'name', 'email', 'instagram', 'answers', 'notification_status', 'notified_at', 'notification_error']
+            fields = ['id', 'submitted_at', 'kind', 'name', 'email', 'instagram', 'answers', 'notification_status', 'notified_at', 'notification_error']
             writer = csv.DictWriter(output, fieldnames=fields)
             writer.writeheader()
             for row in rows:

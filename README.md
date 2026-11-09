@@ -31,6 +31,7 @@ The Expo companion app lives in [`mobile/`](mobile/README.md).
 - Three club pillars: socials and soirées, days of service, and wellness and mindfulness.
 - Expandable frequently asked questions.
 - A three-question membership and partnership inquiry quiz.
+- A month-by-month calendar, sponsor and venue forms, and a cause suggestion box.
 - Links to the club's Instagram and event tickets.
 - Local fonts, images, icons, and video assets.
 - Cream, rose, sky, and navy sections with blended gradient boundaries.
@@ -182,6 +183,35 @@ python server.py --retry-notifications
 ```
 
 The repository excludes runtime databases, CSV exports, and `.env` files.
+
+Sponsor inquiries, venue inquiries, and cause suggestions use the same private
+storage and notification configuration as membership inquiries. The `kind`
+field identifies `sponsor`, `venue`, `cause`, or `join` in the database and
+CSV export. Cause suggestions can be submitted anonymously.
+
+## Update the calendar
+
+In the Firebase Console, open Firestore Database for `a-better-tomorrow-71ed0`
+and add one document per public event in the `calendar_events` collection.
+Use an auto-generated document ID and enter these fields as strings:
+
+| Field | Value |
+| --- | --- |
+| `date` | Required Houston date in `YYYY-MM-DD` format |
+| `title` | Required event name |
+| `time` | Optional display time in Houston time, such as `10:00 AM` |
+| `location` | Optional public venue or location |
+| `description` | Optional public event details |
+| `url` | Optional HTTPS registration or event link |
+
+Edit the document to change the event or delete it to remove it from the
+calendar. The website reads the selected month when it opens, when a visitor
+returns to the tab, and every minute while the tab is visible. Event edits
+take effect without a code change or deployment.
+
+For local development, add an array of event objects with the same fields to
+`data/calendar_events.json` (or the configured `DATA_DIR`). The local file
+is excluded from Git along with inquiry data.
 
 ## Firebase production
 

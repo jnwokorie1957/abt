@@ -73,6 +73,15 @@
             "value": "no-cache"
           }
         ]
+      },
+      {
+        "source": "/calendar{,/**}",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
       }
     ],
     "rewrites": [
@@ -83,6 +92,10 @@
           "region": "us-central1",
           "pinTag": true
         }
+      },
+      {
+        "source": "/calendar{,/}",
+        "destination": "/index.html"
       }
     ]
   },
