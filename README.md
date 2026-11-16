@@ -142,8 +142,17 @@ before inquiries can be saved there.
 ### Optional email notifications
 
 Configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `MAIL_FROM`,
-and `JOIN_TO_EMAIL` to send inquiry notifications. Storage works without email.
-The inquiry is saved before notification delivery is attempted.
+and `JOIN_TO_EMAIL` to send inquiry notifications. The receiving inbox is `abettertomorrowsocial@outlook.com` for all membership,
+sponsor, venue and cause submissions. No admin page is planned. Email delivery
+is pending at the owner’s request until the Outlook account holder can sign in
+and authorize sending through Microsoft OAuth. Stripe activation is also pending
+account-owner access. Resume both setups when the account owner is available.
+No Outlook authorization or live email delivery has been completed. The current
+SMTP implementation uses password authentication; Microsoft OAuth support must
+be implemented and tested before Outlook sending can be activated.
+Do not put passwords or API keys in Git or chat; store sending credentials in
+Google Secret Manager. Storage works without email. The inquiry is saved before
+notification delivery is attempted.
 
 ## Docker
 
