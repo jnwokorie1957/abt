@@ -239,7 +239,7 @@ take effect without a code change or deployment.
 
 The confirmed Winter Wonderland save-the-date is stored in
 `calendar_events/winter-wonderland-gratitude-dinner-2026-12-14`: Monday,
-December 14, 2026, at 7:30 PM Houston time, titled “Better Tomorrow’s Winter
+December 14, 2026, at 7:30 PM Houston time, titled “A Better Tomorrow’s Winter
 Wonderland Gratitude Dinner,” fundraising for Houston Children Charity.
 Its public location is “Location to be announced.” The actual venue is
 intentionally withheld; do not publish it until the owner authorizes release.
