@@ -1,0 +1,14 @@
+[
+  {
+    "id": "tier-1",
+    "tier": "Tier 1",
+    "name": "General member",
+    "monthlyPrice": "9.99"
+  },
+  {
+    "id": "tier-2",
+    "tier": "Tier 2",
+    "name": "Tier 2 membership",
+    "monthlyPrice": "19.99"
+  }
+]

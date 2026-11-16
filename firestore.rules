@@ -1,6 +1,6 @@
 // Assumed data model: join_submissions/{uuid}
 // Private inquiry: id, submitted_at (ISO string), name, email, instagram,
-// answers (three {q, a} maps), notification_status and optional notification
+// answers ({q, a} maps, including optional membership interest), notification_status and notification
 // metadata. The Python API validates and writes these records through IAM.
 // No browser, authenticated user, or anonymous SDK client may access them.
 // Server SDKs bypass these rules; runtime IAM and server.py validation apply.

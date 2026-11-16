@@ -99,6 +99,24 @@ class CommunityTests(unittest.TestCase):
         self.assertEqual(rows['cause']['email'], '')
         self.assertEqual(json.loads(rows['sponsor']['answers'])[-1]['a'], details['details'])
 
+    def test_membership_interest_is_saved_without_creating_subscription(self):
+        payload = {'name': 'Test', 'email': 'test@example.test',
+                   'answers': [{'q': 'Question', 'a': 'Answer'}] * 3}
+        for plan_id, price in [('tier-1', '9.99'), ('tier-2', '19.99')]:
+            status, body = self.request('/api/join', {**payload, 'membership_plan': plan_id,
+                                                     'monthlyPrice': '0.01'})
+            self.assertEqual(status, 201)
+            row = next(row for row in server.saved_rows() if row['id'] == body['id'])
+            answer = json.loads(row['answers'])[-1]
+            self.assertEqual(answer['q'], 'Membership interest (inquiry only)')
+            self.assertIn(f'${price}/month', answer['a'])
+            self.assertEqual(row['kind'], 'join')
+        # Existing mobile and web callers remain valid without a tier.
+        self.assertEqual(self.request('/api/join', payload)[0], 201)
+        for invalid in ['tier-3', [], {}, None, 1]:
+            self.assertEqual(self.request('/api/join', {**payload, 'membership_plan': invalid})[0], 400)
+        self.assertEqual(len(server.saved_rows()), 3)
+
     def test_calendar_filters_month_and_returns_public_fields(self):
         items = [
             {'date': '2026-12-01', 'title': 'December event'},

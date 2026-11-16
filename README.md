@@ -189,6 +189,34 @@ storage and notification configuration as membership inquiries. The `kind`
 field identifies `sponsor`, `venue`, `cause`, or `join` in the database and
 CSV export. Cause suggestions can be submitted anonymously.
 
+## Monthly membership tiers
+
+The homepage lists Tier 1 general membership at $9.99/month and Tier 2 at
+$19.99/month. Benefits are intentionally omitted until the owner supplies the
+final membership details; do not restore the earlier suggested benefit lists.
+`membership-plans.json` is shared by the web cards and Python inquiry validation;
+the API records the canonical tier and price, ignoring client-supplied prices.
+The existing three-question inquiry accepts an optional `membership_plan` value
+(`tier-1` or `tier-2`), stored in its answers for notifications and CSV export.
+Existing mobile callers can omit the field.
+
+This is a membership-interest flow, not a subscription system. The cards clearly
+state that online monthly payments are coming soon. The chosen provider is Stripe.
+Activation is explicitly deferred at the owner's request until the account holder
+provides access. No Stripe connection or live payment setup has been completed.
+Before opening paid enrollment, configure the two recurring monthly prices,
+checkout, billing/cancellation management, and a verified membership-status flow
+for any future member-only benefits. Do not request secret keys in chat.
+The public cause form remains public; it does not verify a paid membership or
+enforce Tier 2 permissions. Do not treat an inquiry or Firebase account as payment.
+
+Outstanding membership tasks:
+
+- [ ] Receive the final benefits and membership details for each tier.
+- [ ] Obtain access to the correct ABT Stripe account from its account holder.
+- [ ] Configure and verify $9.99/month and $19.99/month recurring payments and
+  customer subscription management, then activate checkout on the website.
+
 ## Update the calendar
 
 In the Firebase Console, open Firestore Database for `a-better-tomorrow-71ed0`
@@ -208,6 +236,13 @@ Edit the document to change the event or delete it to remove it from the
 calendar. The website reads the selected month when it opens, when a visitor
 returns to the tab, and every minute while the tab is visible. Event edits
 take effect without a code change or deployment.
+
+The confirmed Winter Wonderland save-the-date is stored in
+`calendar_events/winter-wonderland-gratitude-dinner-2026-12-14`: Monday,
+December 14, 2026, at 7:30 PM Houston time, titled “Better Tomorrow’s Winter
+Wonderland Gratitude Dinner,” fundraising for Houston Children Charity.
+Its public location is “Location to be announced.” The actual venue is
+intentionally withheld; do not publish it until the owner authorizes release.
 
 For local development, add an array of event objects with the same fields to
 `data/calendar_events.json` (or the configured `DATA_DIR`). The local file

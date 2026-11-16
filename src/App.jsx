@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import content from './content.json';
 import Arrow from './Arrow';
 import Calendar from './Calendar';
+import Memberships from './Memberships';
+import membershipPlans from '../membership-plans.json';
 import { Causes, Partnerships } from './Community';
 
 const { site, faq, join, socials, pillars, story, steps, partners, testimonial, whyJoin } = content;
 const nav = [
   ...content.nav.slice(0, 2),
   { label: 'Calendar', href: '/calendar' },
+  { label: 'Memberships', href: '#memberships' },
   ...content.nav.slice(2, 4),
   { label: 'Partner with ABT', href: '#partner' },
   ...content.nav.slice(4),
@@ -130,6 +133,7 @@ function FAQ({ onJoin }) {
   const [active, setActive] = useState(0);
   const webAnswers = {
     1: <>Check the <a className="faq-inline-link" href="/calendar">ABT calendar</a> for upcoming events and registration details. Ticket availability depends on the event.</>,
+    3: <>Explore our <a className="faq-inline-link" href="#memberships">monthly memberships</a>: Tier 1 general membership is $9.99/month and Tier 2 is $19.99/month. Full membership details will be announced soon. Online payments are coming soon; you can inquire about either tier now.</>,
     4: <>We’d love to hear from you. <a className="faq-inline-link" href="#sponsor">Ask about sponsorship</a> or <a className="faq-inline-link" href="#venue">tell us about your venue</a>.</>,
   };
   const labels = ['WHO IT’S FOR', 'TICKETS', 'THE CAUSES', 'MEMBERSHIP', 'PARTNERSHIPS', 'WHAT TO BRING'];
@@ -140,7 +144,8 @@ function Join({ onJoin }) {
   return <footer id="join" className="join section-pad"><div className="join-grid" data-reveal><div className="join-photos"><figure className="polaroid"><Photo src={join.photo} alt="Friends together at an ABT social" /><figcaption>an evening with ABT.</figcaption></figure><span className="join-sticker">HOUSTON, TX.<br /><em>See you around.</em><Star /></span></div><div className="join-copy"><Eyebrow>05 / Get in touch</Eyebrow><h2>Tell us a little<br /><em>about yourself.</em></h2><p>Tell us what brings you to ABT. Answer three quick questions about your interests, then leave your contact details.</p><button className="button" onClick={onJoin}>Start the questions <Arrow /></button><a className="text-link" href={site.instagram} target="_blank" rel="noreferrer">Or send us a DM <Arrow /></a></div></div><div className="footer-bottom"><a className="brand" href="#top">A BETTER TOMORROW SOCIAL <Arrow direction="up" /></a><span>© {new Date().getFullYear()} · Houston, Texas</span><span>Founded by {site.founders.map((founder, i) => <React.Fragment key={founder.handle}>{i > 0 && ' & '}<a href={founder.url} target="_blank" rel="noreferrer">{founder.handle}</a></React.Fragment>)}</span></div><div className="footer-word" aria-hidden="true">SEE YOU AROUND.</div></footer>;
 }
 
-function JoinDialog({ onClose }) {
+function JoinDialog({ onClose, initialPlan }) {
+  const [membershipPlan, setMembershipPlan] = useState(initialPlan);
   const dialog = useRef(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -159,18 +164,18 @@ function JoinDialog({ onClose }) {
     const form = new FormData(event.currentTarget);
     setStatus('sending'); setError('');
     try {
-      const response = await fetch('/api/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: form.get('name'), email: form.get('email'), instagram: form.get('instagram'), answers: join.quiz.map((item, index) => ({ q: item.q, a: answers[index] })) }), signal: AbortSignal.timeout(20000) });
+      const response = await fetch('/api/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: form.get('name'), email: form.get('email'), instagram: form.get('instagram'), membership_plan: membershipPlan, answers: join.quiz.map((item, index) => ({ q: item.q, a: answers[index] })) }), signal: AbortSignal.timeout(20000) });
       if (!response.ok) throw new Error('save failed');
       setStatus('sent');
     } catch { setStatus('idle'); setError('We couldn’t save your inquiry. Please try again, or message us on Instagram.'); }
   }
-  return <dialog className="join-dialog" ref={dialog} aria-labelledby="quiz-title" onCancel={onClose} onClick={event => { if (event.target === dialog.current) onClose(); }}><div className="dialog-inner"><button className="dialog-close" onClick={onClose} aria-label="Close quiz">×</button><Eyebrow>Get in touch with ABT</Eyebrow>{status === 'sent' ? <div className="success"><Star /><h2 id="quiz-title" tabIndex={-1} data-step-title>Thanks for<br /><em>reaching out.</em></h2><p>Your inquiry has been saved for the ABT team. This doesn’t confirm membership or reserve a spot at an event.</p><button className="button" onClick={onClose}>Back to the site <Arrow /></button></div> : <><div className="quiz-progress" aria-label={`Step ${step + 1} of 4`}>{[0, 1, 2, 3].map(n => <span key={n} className={step >= n ? 'complete' : ''} />)}</div>{step < 3 ? <><p className="quiz-step">QUESTION 0{step + 1} / 03</p><h2 id="quiz-title" key={step} tabIndex={-1} data-step-title>{join.quiz[step].q}</h2><div className="quiz-options">{join.quiz[step].options.map(option => <button key={option} onClick={() => { setAnswers([...answers.slice(0, step), option]); setStep(step + 1); }}>{option}<Arrow /></button>)}</div>{step > 0 && <button className="text-link" onClick={() => setStep(step - 1)}><Arrow direction="left" /> Back</button>}</> : <form onSubmit={submit}><h2 id="quiz-title" tabIndex={-1} data-step-title>Where can we<br /><em>reach you?</em></h2>{[{ name: 'name', label: 'First name', type: 'text', max: 120, auto: 'given-name' }, { name: 'email', label: 'Email', type: 'email', max: 254, auto: 'email' }, { name: 'instagram', label: 'Instagram (optional)', type: 'text', max: 100, auto: 'off' }].map(field => <label key={field.name}>{field.label}<input name={field.name} type={field.type} maxLength={field.max} autoComplete={field.auto} required={field.name !== 'instagram'} disabled={status === 'sending'} /></label>)}<p className="privacy-note">Your details stay private and are used to respond to your inquiry.</p>{error && <p className="form-error" role="alert">{error} <a href={site.instagram} target="_blank" rel="noreferrer">Contact ABT <Arrow /></a></p>}<button className="button" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send inquiry'}<Arrow /></button><button className="text-link" type="button" disabled={status === 'sending'} onClick={() => setStep(2)}><Arrow direction="left" /> Back</button></form>}</>}</div></dialog>;
+  return <dialog className="join-dialog" ref={dialog} aria-labelledby="quiz-title" onCancel={onClose} onClick={event => { if (event.target === dialog.current) onClose(); }}><div className="dialog-inner"><button className="dialog-close" onClick={onClose} aria-label="Close quiz">×</button><Eyebrow>{membershipPlan ? `Get in touch · ${membershipPlans.find(plan => plan.id === membershipPlan).tier}` : 'Get in touch with ABT'}</Eyebrow>{status === 'sent' ? <div className="success"><Star /><h2 id="quiz-title" tabIndex={-1} data-step-title>Thanks for<br /><em>reaching out.</em></h2><p>Your inquiry has been saved for the ABT team. This doesn’t confirm membership or reserve a spot at an event.</p><button className="button" onClick={onClose}>Back to the site <Arrow /></button></div> : <><div className="quiz-progress" aria-label={`Step ${step + 1} of 4`}>{[0, 1, 2, 3].map(n => <span key={n} className={step >= n ? 'complete' : ''} />)}</div>{step < 3 ? <><p className="quiz-step">QUESTION 0{step + 1} / 03</p><h2 id="quiz-title" key={step} tabIndex={-1} data-step-title>{join.quiz[step].q}</h2><div className="quiz-options">{join.quiz[step].options.map(option => <button key={option} onClick={() => { setAnswers([...answers.slice(0, step), option]); setStep(step + 1); }}>{option}<Arrow /></button>)}</div>{step > 0 && <button className="text-link" onClick={() => setStep(step - 1)}><Arrow direction="left" /> Back</button>}</> : <form onSubmit={submit}><h2 id="quiz-title" tabIndex={-1} data-step-title>Where can we<br /><em>reach you?</em></h2>{[{ name: 'name', label: 'First name', type: 'text', max: 120, auto: 'given-name' }, { name: 'email', label: 'Email', type: 'email', max: 254, auto: 'email' }, { name: 'instagram', label: 'Instagram (optional)', type: 'text', max: 100, auto: 'off' }].map(field => <label key={field.name}>{field.label}<input name={field.name} type={field.type} maxLength={field.max} autoComplete={field.auto} required={field.name !== 'instagram'} disabled={status === 'sending'} /></label>)}<label htmlFor="membership-plan">Membership interest</label><select id="membership-plan" name="membership_plan" value={membershipPlan} onChange={event => setMembershipPlan(event.target.value)} disabled={status === 'sending'}><option value="">I’m still deciding</option>{membershipPlans.map(plan => <option key={plan.id} value={plan.id}>{plan.tier} — ${plan.monthlyPrice}/month</option>)}</select><p className="privacy-note">This is an inquiry only. No payment is collected or subscription started.</p><p className="privacy-note">Your details stay private and are used to respond to your inquiry.</p>{error && <p className="form-error" role="alert">{error} <a href={site.instagram} target="_blank" rel="noreferrer">Contact ABT <Arrow /></a></p>}<button className="button" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send inquiry'}<Arrow /></button><button className="text-link" type="button" disabled={status === 'sending'} onClick={() => setStep(2)}><Arrow direction="left" /> Back</button></form>}</>}</div></dialog>;
 }
 
 export default function App() {
-  const [joining, setJoining] = useState(false);
+  const [joining, setJoining] = useState(null);
   const calendar = /^\/calendar\/?$/.test(window.location.pathname);
-  const onJoin = () => setJoining(true);
+  const onJoin = plan => setJoining(typeof plan === 'string' ? plan : '');
   useReveal();
   useEffect(() => {
     if (calendar) document.title = 'Calendar | A Better Tomorrow Social';
@@ -188,6 +193,7 @@ export default function App() {
         <Story />
         <Socials />
         <Pillars />
+        <Memberships onJoin={onJoin} />
         <Causes />
         <WhyJoin />
         <Partnerships />
@@ -198,6 +204,6 @@ export default function App() {
     {calendar
       ? <footer className="calendar-footer"><a className="brand" href="/">A BETTER TOMORROW SOCIAL <Arrow /></a><span>Houston, Texas</span></footer>
       : <Join onJoin={onJoin} />}
-    {joining && <JoinDialog onClose={() => setJoining(false)} />}
+    {joining !== null && <JoinDialog initialPlan={joining} onClose={() => setJoining(null)} />}
   </>;
 }

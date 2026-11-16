@@ -32,6 +32,8 @@ PUBLIC = (BASE / 'dist').resolve()
 DATA = Path(os.environ.get('DATA_DIR', str(BASE / 'data'))).resolve()
 MAX_BODY = 16384
 LOG = logging.getLogger('abt')
+MEMBERSHIP_PLANS = {plan['id']: plan for plan in json.loads(
+    (BASE / 'membership-plans.json').read_text(encoding='utf-8'))}
 INQUIRY_FIELDS = {
     'sponsor': (('organization', 'Business or organization', 160, True),
                 ('details', 'Sponsorship idea', 1000, True)),
@@ -206,6 +208,13 @@ def validate(payload, kind='join'):
                len(answer[k]) > 1000 or any(ord(c) < 32 for c in answer[k]) for k in ('q', 'a')):
             raise ValueError('Invalid answer.')
         cleaned.append({k: answer[k].strip() for k in ('q', 'a')})
+    plan_id = payload.get('membership_plan', '')
+    if not isinstance(plan_id, str) or (plan_id and plan_id not in MEMBERSHIP_PLANS):
+        raise ValueError('Invalid membership plan.')
+    if plan_id:
+        plan = MEMBERSHIP_PLANS[plan_id]
+        cleaned.append({'q': 'Membership interest (inquiry only)',
+                        'a': f"{plan['tier']} — {plan['name']} — ${plan['monthlyPrice']}/month"})
     return name, email, instagram, cleaned
 
 
